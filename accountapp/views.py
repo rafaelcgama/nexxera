@@ -96,5 +96,7 @@ class TransactionViewSet(ModelViewSet):
         new_transaction.save()
 
         serializer = TransactionSerializer(new_transaction)
+        response = Response(serializer.data)
+        response.status_code = 201
 
-        return Response(serializer.data)
+        return response
