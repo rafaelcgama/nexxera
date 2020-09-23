@@ -1,18 +1,28 @@
+import os
 from faker import Faker
 from datetime import date
 from decimal import Decimal
+
 from rest_framework import status
 from rest_framework.test import APIClient
+
 from django.test import TestCase
-from django.urls import path, include, reverse
+from django.urls import path, reverse
+from django.conf.urls import include
+
 from .models import Account, Transaction
 from .serializers import AccountSerializer, TransactionSerializer
+from .views import get_balance
+
 from factory.django import DjangoModelFactory
 from factory import SubFactory, fuzzy
 
 # Create your tests here.
 fake = Faker()
 fake.seed_instance(0)
+urlpatterns = [
+    path('api/v1/', include('accountapp.urls'))
+]
 
 
 ##### FACTORIES ######
@@ -42,7 +52,7 @@ class TransactionFactory(DjangoModelFactory):
 
 
 ##### MODEL TESTS #####
-class SalaryModelTest(TestCase):
+class AccountModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.account = AccountFactory()
@@ -63,8 +73,7 @@ class SalaryModelTest(TestCase):
         self.assertTrue(self.account.email)
 
 
-####### Salary Model Tests #########
-class SalaryModelTest(TestCase):
+class TransactionModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.account = AccountFactory()
@@ -89,9 +98,6 @@ class SalaryModelTest(TestCase):
 
 ##### VIEW TESTS #####
 class AccountViewTest(TestCase):
-    urlpatterns = [
-        path('api/v1/', include('accountapp.urls'))
-    ]
 
     def setUp(self):
         self.client = APIClient()
@@ -172,9 +178,6 @@ class AccountViewTest(TestCase):
 
 
 class TransactionViewTest(TestCase):
-    urlpatterns = [
-        path('api/v1/', include('accountapp.urls'))
-    ]
 
     @classmethod
     def setUpTestData(cls):
@@ -261,6 +264,49 @@ class TransactionViewTest(TestCase):
         self.assertEquals(resp_transaction.status_code, status.HTTP_204_NO_CONTENT)
 
 
+class StatementViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.account = AccountFactory()
+        cls.transaction = TransactionFactory()
+
+    def setUp(self):
+        self.client = APIClient()
+        self.transactions = TransactionFactory()
+        self.base_end_point = '/api/v1/statement/'
+        self.base_url = self.base_end_point + '?account_number={account_id}&date_min={date_min}&date_max={date_max}&transaction_type={transaction_type}'
+        self.new_statement = {
+            'account_id': self.account.id,
+            'date_min': '2020-09-03',
+            'date_max': '2020-09-15',
+            'transaction_type': 'All'
+        }
+
+    def test_main_page(self):
+        response = self.client.get(self.base_end_point, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_search_statement(self):
+        search_url = self.base_url.format_map(self.new_statement)
+        response = self.client.get(search_url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(self.base_end_point)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTemplateUsed(response, 'bootstrap_form.html')
+
+    def test_get_balance_start(self):
+        qs = Transaction.objects.all()
+        start_balance = get_balance(0, qs, date=self.transaction.date, start=True)
+
+        self.assertIsInstance(Decimal(start_balance), Decimal)
+        self.assertTrue(0 == start_balance)
+
+
 ##### SERIALIZERS TESTS #####
 class EmployeeSerializerTest(TestCase):
 
@@ -294,7 +340,8 @@ class SalarySerializerTest(TestCase):
 
     def test_contains_expected_fields(self):
         data = self.serializer.data
-        self.assertEqual(set(data.keys()), set(['account_id', 'date', 'description', 'transaction_type', 'amount', 'id']))
+        self.assertEqual(set(data.keys()),
+                         set(['account_id', 'date', 'description', 'transaction_type', 'amount', 'id']))
 
     def test_columns_content(self):
         data = self.serializer.data
@@ -305,6 +352,12 @@ class SalarySerializerTest(TestCase):
         self.assertEqual(data['amount'], str(self.transaction.amount))
 
 
+##### TEST MANAGE #####
+class TestEnvVariable(TestCase):
 
+    def test_django_env_variable(self):
+        django_settings = os.getenv('DJANGO_SETTINGS_MODULE')
 
-
+        self.assertTrue(django_settings)
+        self.assertIsInstance(django_settings, str)
+        self.assertEqual(django_settings, 'nexxera.settings')

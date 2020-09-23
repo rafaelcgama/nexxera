@@ -9,6 +9,7 @@ from accountapp.serializers import AccountSerializer, TransactionSerializer
 def is_valid_queryparam(param):
     return param != '' and param is not None
 
+
 def get_balance(start_balance, qs, date=None, start=False):
     if start and date is not None:
         qs = qs.filter(date__lt=date)
@@ -17,17 +18,6 @@ def get_balance(start_balance, qs, date=None, start=False):
     balance = balance if balance is not None else 0
 
     return start_balance + balance
-
-
-# def get_start_balance(start_baqs, date):
-#     qs = qs.filter(date__lt=date)
-#     start_balance = qs.aggregate(Sum('amount'))
-#     return start_balance['amount__sum']
-#
-#
-# def get_end_balance(start_balance, qs, date):
-#     period_sum = qs.aggregate(Sum('amount'))['amount__sum']
-#     return start_balance - period_sum
 
 
 def BootstrapFilterView(request):
