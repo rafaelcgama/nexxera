@@ -9,9 +9,7 @@ services:
       - POSTGRES_PASSWORD=postgres
   web:
       build: .
-      # .sh file not working in windows, hence this command
-#      command: bash -c "python manage.py migrate && python manage.py loaddata dataset.json && python manage.py runserver 0.0.0.0:8000"
-      command: python manage.py runserver 0.0.0.0:8000
+      command: bash -c "python manage.py migrate && python manage.py runserver"
       volumes:
         - .:/code
       ports:

@@ -75,12 +75,12 @@ TEMPLATES = [
     },
 ]
 
-DATE_FORMAT, DATE_INPUT_FORMATS = '%d/%m/%Y', ['%d/%m/%Y']
+# DATE_FORMAT, DATE_INPUT_FORMATS = '%d/%m/%Y', ['%d/%m/%Y']
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DATE_FORMAT': DATE_FORMAT,
-    'DATE_INPUT_FORMATS': DATE_INPUT_FORMATS,
+    # 'DATE_FORMAT': DATE_FORMAT,
+    # 'DATE_INPUT_FORMATS': DATE_INPUT_FORMATS,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -99,18 +99,18 @@ WSGI_APPLICATION = 'nexxera.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
     # 'default': {
-    #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': 'postgres',
-    #         'USER': 'postgres',
-    #         'PASSWORD': 'postgres',
-    #         'HOST': 'db',
-    #         'PORT': 5432,
-    #     }
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
+    'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'db',
+            'PORT': 5432,
+        }
 }
 
 

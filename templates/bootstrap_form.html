@@ -47,6 +47,9 @@
     <hr>
 
     <div class="row">
+        <p><b>Start Balance: </b>{{ start_balance }}</p>
+    </div>
+    <div class="row">
         <ul>
             {% for transaction in queryset %}
                 <li>
@@ -58,6 +61,9 @@
                 <hr>
             {% endfor %}
         </ul>
+    </div>
+    <div class="row">
+        <p><b>End Balance: </b>{{ end_balance }}</p>
     </div>
 
 </main>
