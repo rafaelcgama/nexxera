@@ -16,7 +16,7 @@ Then use the address provided by the terminal as the base url for the api. In my
 
 Proceed to the browser and use the following endpoints to perform operations 
 
-* **http://127.0.0.1:8000/api/v1/accounts **: crud operations for accounts
+* **http://127.0.0.1:8000/api/v1/accounts**: crud operations for accounts
 * **http://127.0.0.1:8000/api/v1/transactions**: crud operations for transactions
 * **http://127.0.0.1:8000/api/v1/statement**: filters to display transactions and balances in different periods and by transaction types
 
