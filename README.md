@@ -1,19 +1,47 @@
-# Nexxera Project 
+# Nexxera Project
 
-### Objective
+## _Objective_
 
 The goal of this project is to create an account with credit/debit and statement functions using the Python/Django RestFramework.
 
-### Instructions 
+## _Instructions_
 
-In order to run the program please access the Terminal and to the folder where the repo is located and execute the docker compose file after the virtual environment is created:  
+First, you must have Docker installed in your computer so if you don't have it already please go ahead and install it. Once you have Docker installed and running please access the Terminal, go to the folder where the repo is located and execute the docker compose file:
 
 * docker-compose up
 
-Then use 0.0.0.0:8000 or localhost:8000 as base for the api endpoints and proceed to the browser to access them by using following urls:
+This API ins consisted of 3 endpoints with the following functionalities:
 
-* **localhost:8000/api/v1/accounts**: crud operations for accounts
-* **localhost:8000/api/v1/transactions**: crud operations for transactions
-* **localhost:8000/api/v1/statement**: filters transactions to display transactions and balances in different periods and by transaction types
+* **/accounts/**: perform curd operations for accounts
+* **/transactions/**: perform crud operations for transactions
+* **/statement/**: filters transactions to display transactions and balances in different periods and by transaction types
 
-PS: To add transactions, always use positive numbers for the amount. The app will add the sign automatically according to the transaction type selected.
+
+In order to use the program, an account (or more) must be created using the **account** endpoint. Once that's done, the transactions need to be insert via the **transaction**. Finally, the statements can be created using the **statement** endpoint using the dates of your choice.
+
+
+### **Create an account**
+To create an account please open your browser and access the **accounts** endpoint at:
+
+* localhost:8000/api/v1/accounts
+
+All fields must be entered in other to create the account
+
+
+
+### **Add Transactions**
+
+To add transaction please access the **transactions** endpoint at:
+
+* localhost:8000/api/v1/transactions
+
+All fields but the description must the added in order to create the transaction. Also, you must assign the transaction to one of the accounts that were created and only use positive numbers in the amount. The selection of debit or credit will select the correct sign internally.
+
+
+### **Get Statements**
+
+To create statements please access the **statement** endpoint at:
+
+* localhost:8000/api/v1/transaction
+
+In order to get results, at least the account number must be entered. The other fields are optional and the user is free to selected them in whichever way he chooses to generate the desired statement.
