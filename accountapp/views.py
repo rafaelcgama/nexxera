@@ -1,5 +1,7 @@
 from django.db.models import Sum
+from django.http import JsonResponse
 from django.shortcuts import render
+from rest_framework.decorators import api_view
 from rest_framework.viewsets import ModelViewSet
 from accountapp.models import Account, Transaction
 from rest_framework.response import Response
@@ -20,8 +22,10 @@ def get_balance(start_balance, qs, date=None, start=False):
     return start_balance + balance
 
 
-def BootstrapFilterView(request):
+@api_view(['GET'])
+def get_statement(request):
     qs = ''
+    is_json = 'json' in request.accepted_renderer.media_type
     types = ['Credit', 'Debit']
 
     # inputs
@@ -44,7 +48,7 @@ def BootstrapFilterView(request):
             qs = qs.filter(date__gte=date_min)
 
         if is_valid_queryparam(date_max):
-            qs = qs.filter(date__lt=date_max)
+            qs = qs.filter(date__lte=date_max)
 
         if is_valid_queryparam(transaction_type):
             if transaction_type != 'All':
@@ -53,12 +57,17 @@ def BootstrapFilterView(request):
         end_balance = get_balance(start_balance, qs)
 
     context = {
-        'queryset': qs,
-        'types': types,
         'start_balance': start_balance,
+        'transactions': list(qs.values()) if is_json else qs,
         'end_balance': end_balance
     }
 
+    # If client wants JSON
+    if is_json:
+        return JsonResponse(context, safe=False)
+
+    # If the client wants HTML
+    context.update({'types': types})
     return render(request, "bootstrap_form.html", context)
 
 

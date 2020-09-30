@@ -51,7 +51,7 @@
     </div>
     <div class="row">
         <ul>
-            {% for transaction in queryset %}
+            {% for transaction in transactions %}
                 <li>
                     <span><b>Date: </b> {{ transaction.date }}</span>
                     <span><b> - Description: </b> {{ transaction.description }}</span>
