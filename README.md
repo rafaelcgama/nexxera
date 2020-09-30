@@ -42,6 +42,6 @@ All fields but the description must the added in order to create the transaction
 
 To create statements please access the **statement** endpoint at:
 
-* localhost:8000/api/v1/transaction
+* localhost:8000/api/v1/statement
 
 In order to get results, at least the account number must be entered. The other fields are optional and the user is free to selected them in whichever way he chooses to generate the desired statement.
