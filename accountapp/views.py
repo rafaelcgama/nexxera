@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from accountapp.serializers import AccountSerializer, TransactionSerializer
 
 
-def is_valid_queryparam(param):
+def is_valid_query_param(param):
     return param != '' and param is not None
 
 
@@ -40,17 +40,17 @@ def get_statement(request):
 
         qs = Transaction.objects.all()
 
-        if is_valid_queryparam(account_number):
+        if is_valid_query_param(account_number):
             qs = qs.filter(account_id__id=account_number)
 
-        if is_valid_queryparam(date_min):
+        if is_valid_query_param(date_min):
             start_balance = get_balance(start_balance, qs, date_min, start=True)
             qs = qs.filter(date__gte=date_min)
 
-        if is_valid_queryparam(date_max):
+        if is_valid_query_param(date_max):
             qs = qs.filter(date__lte=date_max)
 
-        if is_valid_queryparam(transaction_type):
+        if is_valid_query_param(transaction_type):
             if transaction_type != 'All':
                 qs = qs.filter(transaction_type=transaction_type).order_by('date')
 
@@ -58,7 +58,7 @@ def get_statement(request):
 
     context = {
         'start_balance': start_balance,
-        'transactions': list(qs.values()) if is_json else qs,
+        'transactions': list(qs.values()) if (is_json and not isinstance(qs, str)) else qs,
         'end_balance': end_balance
     }
 
@@ -68,7 +68,7 @@ def get_statement(request):
 
     # If the client wants HTML
     context.update({'types': types})
-    return render(request, "bootstrap_form.html", context)
+    return render(request, "statement.html", context)
 
 
 # Create your views here.

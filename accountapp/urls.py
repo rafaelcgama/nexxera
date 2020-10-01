@@ -8,5 +8,5 @@ router.register(r'transactions', TransactionViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^statement/$', get_statement, name='bootstrap'),
+    url(r'^statement/$', get_statement, name='statement'),
 ]

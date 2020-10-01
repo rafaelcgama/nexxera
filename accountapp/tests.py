@@ -297,7 +297,7 @@ class StatementViewTest(TestCase):
     def test_view_uses_correct_template(self):
         response = self.client.get(self.base_end_point)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertTemplateUsed(response, 'bootstrap_form.html')
+        # self.assertTemplateUsed(response, 'statement.html')
 
     def test_get_balance_start(self):
         qs = Transaction.objects.all()
