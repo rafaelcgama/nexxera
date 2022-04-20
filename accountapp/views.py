@@ -36,7 +36,7 @@ def get_statement(request):
 
     start_balance = 0
     end_balance = 0
-    if account_number is not None and len(account_number):
+    if account_number:
 
         qs = Transaction.objects.all()
 

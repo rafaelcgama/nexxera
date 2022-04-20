@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 from accountapp.views import AccountViewSet, TransactionViewSet, get_statement
 
-router = DefaultRouter() # Creates router dor ViewSet urls
+router = DefaultRouter()  # Creates router for ViewSet urls
 router.register(r'accounts', AccountViewSet)
 router.register(r'transactions', TransactionViewSet)
 

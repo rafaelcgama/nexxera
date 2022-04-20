@@ -12,12 +12,12 @@ First, you must have Docker installed in your computer so if you don't have it a
 
 This API ins consisted of 3 endpoints with the following functionalities:
 
-* **/accounts/**: perform curd operations for accounts
+* **/accounts/**: perform crud operations for accounts
 * **/transactions/**: perform crud operations for transactions
 * **/statement/**: filters transactions to display transactions and balances in different periods and by transaction types
 
 
-In order to use the program, an account (or more) must be created using the **account** endpoint. Once that's done, the transactions need to be insert via the **transaction**. Finally, the statements can be created using the **statement** endpoint using the dates of your choice.
+In order to use the program, an account (or more) must be created using the **account** endpoint. Once that's done, the transactions need to be inserted via the **transaction**. Finally, the statements can be created using the **statement** endpoint using the dates of your choice.
 
 
 ### **Create an account**
